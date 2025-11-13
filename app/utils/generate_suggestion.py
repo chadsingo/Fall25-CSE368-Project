@@ -1,3 +1,3 @@
 def generate_suggestion(post):
-    suggestion = ''
+    suggestion = 'testing'
     return suggestion

@@ -1,1 +1,3 @@
 flask
+numpy
+sentence_transformers
