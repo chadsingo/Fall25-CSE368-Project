@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 
 
 from utils.generate_suggestion import generate_suggestion
@@ -11,8 +11,9 @@ def hello_world():
 
 
 
-@app.route("/suggest")
+@app.route("/suggest", methods=['POST'])
 def suggest():
-    suggestion = generate_suggestion()
+    text = request.form.get('text')
+    suggestion = generate_suggestion(text)
 
     return suggestion
