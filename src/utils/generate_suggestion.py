@@ -1,9 +1,4 @@
-from src.gemini import client
+import src.gemini as gemini
 
 def generate_suggestion(post_text):
-    response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=post_text,
-    )
-
-    return response.text
+    return gemini.gen_content(post_text)

@@ -11,6 +11,5 @@ def hello_world():
 
 @app.route("/suggest")
 def suggest():
-    suggestion = generate_suggestion()
-
+    suggestion = generate_suggestion("aaaaaaaaaa")
     return suggestion
