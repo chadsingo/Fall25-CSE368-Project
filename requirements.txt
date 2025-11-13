@@ -1,3 +1,6 @@
-flask
 numpy
 sentence_transformers
+flask~=3.1.2
+google~=3.0.0
+dotenv~=0.9.9
+python-dotenv~=1.2.1
