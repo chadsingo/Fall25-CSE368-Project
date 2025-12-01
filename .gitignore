@@ -213,6 +213,22 @@ __marimo__/
 
 
 #-----------------------------------------------ADDED BY US -------------------------------------------
-slides.json
 #Jetbrains
 .idea/*
+
+# Ignore processed dataset files
+lecture_data.json
+vector_store.json
+slides.json
+
+# Ignore raw teaching materials
+src/assignments/
+src/lectures/
+
+# Ignore generated slide images and processed chunks
+src/slide_images/
+src/processed/
+
+# Just in case any stray extracted image/output folder appears
+**/slide_images/
+**/processed/
