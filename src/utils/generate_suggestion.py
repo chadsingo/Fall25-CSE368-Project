@@ -1,4 +1,4 @@
-from utils.gemini import gen_content
+from .gemini import gen_content
 
 def generate_suggestion(context):
     question = context["question"]

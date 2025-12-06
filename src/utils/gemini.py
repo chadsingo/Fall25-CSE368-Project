@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai  # Correct import!
+from google import genai  # Correct import!
 
 load_dotenv()
 
@@ -14,11 +14,14 @@ if not test_mode:
 
 
 def gen_content(content):
+    ret = None
     if test_mode:
-        return "PRETEND THIS IS A SMART AI RESPONSE"
+        ret = "PRETEND THIS IS A SMART AI RESPONSE"
     else:
         response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=content,
         )
-        return response.text
+        ret = response.text
+    print("Sending response to client: "+ret)
+    return ret
