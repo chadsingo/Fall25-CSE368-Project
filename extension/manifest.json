@@ -12,7 +12,7 @@
   "content_scripts": [
     {
       "matches": ["*://piazza.com/class/*/post/*"],
-      "js": ["borderify.js"]
+      "js": ["main.js"]
     }
   ]
 }
