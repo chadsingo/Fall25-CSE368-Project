@@ -128,5 +128,9 @@ function onMessage(message) {
 }
 
 // Add message listener
-browser.runtime.onMessage.addListener(onMessage)
+if (chrome) {
+    chrome.runtime.onMessage.addListener(onMessage)
+} else {
+    browser.runtime.onMessage.addListener(onMessage)
+}
 
