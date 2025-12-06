@@ -2,21 +2,28 @@ import os
 import json
 import numpy as np
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from sentence_transformers import SentenceTransformer, util
 from utils.generate_suggestion import generate_suggestion
 
 # === Load Models and Data ===
+print("Loading Models and Data...")
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 # Load processed slides
+print("Loading Processed Slides...")
 with open("lecture_data.json") as f:
     slides = json.load(f)
 
 # Load vector store
+print("Loading Vector Store...")
 with open("vector_store.json") as f:
     vector_store = json.load(f)
 
 app = Flask(__name__)
+cors = CORS(app) # allow CORS for all domains on all routes.
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 
 @app.route("/suggest", methods=['POST'])
 def suggest():

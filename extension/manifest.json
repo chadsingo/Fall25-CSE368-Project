@@ -1,10 +1,8 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "pAIzza",
   "version": "0.1",
-
   "description": "Handy Piazza AI assistant for TAs",
-
   "icons": {
     "48": "icon.png"
   },
@@ -14,5 +12,12 @@
       "matches": ["*://piazza.com/class/*/post/*"],
       "js": ["main.js"]
     }
+  ],
+
+  "host_permissions": [
+    "http://*/",
+    "http://*/*",
+    "https://*/",
+    "https://*/*"
   ]
 }
