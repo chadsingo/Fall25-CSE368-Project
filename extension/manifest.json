@@ -7,9 +7,13 @@
     "48": "icon.png"
   },
 
+  "background": {
+    "scripts": ["background.js"]
+  },
+
   "content_scripts": [
     {
-      "matches": ["*://piazza.com/class/*/post/*"],
+      "matches": ["*://piazza.com/class/*"],
       "js": ["main.js"]
     }
   ],
