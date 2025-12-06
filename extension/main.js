@@ -1,3 +1,11 @@
+let errorSuggest = {
+    "suggested_answer": "ERROR: could not get suggestion",
+    "most_relevant_slide": {
+        "page_number": "N/A",
+        "file_name": "no_file"
+    }
+}
+
 // Fetch AI suggestion from backend
 function getSuggestion() {
     // Trying to find parent div for student question
@@ -21,7 +29,7 @@ function getSuggestion() {
                     })
                 }
             }).catch(err => {
-                displaySuggestion({"suggested_answer": "ERROR: could not get suggestion"})
+                displaySuggestion(errorSuggest)
             })
 
     } else {
@@ -48,9 +56,14 @@ suggestElem.innerHTML = `
         <div class="col">
             <div class="pt-0 pb-1 history-selection">
                 <div id="AI_EXTENSION_render" data-id="renderHtmlId" class="render-html-content overflow-hidden latex_process">
+                    <p>Loading suggestion...</p>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="px-4 ml-2">
+    <div id="AI_context" class="update_text" data-id="contributors">
     </div>
 </div>
 `
@@ -61,13 +74,25 @@ divider.className = "my-0 mx-2"
 
 // Insert Suggestion Element
 function insertSuggestionElement() {
+    // Trying to find post type
+    let postType = document.getElementById("qaContentViewId").ariaLabel
     // Trying to find instructor's answer
-    let instructorAnswer = document.querySelector('[data-id="i_answer"]')
-    // If we found the answer, the page has loaded
-    if (instructorAnswer) {
+    let instructorAnswer = document.getElementById("qanda-content").querySelector('[data-id="i_answer"]')
+    // Seeing if element was already inserted
+    let suggest = document.getElementById("AI_EXTENSION_render")
+    // If we found the answer & the element hasn't been inserted, we are good to go
+    if (instructorAnswer && !suggest && postType === "question") {
         // Insert element below the answer
         instructorAnswer.insertAdjacentElement('afterend', suggestElem)
         instructorAnswer.insertAdjacentElement('afterend', divider)
+        // Fetch suggestion from the backend
+        getSuggestion()
+    } else if (suggest) {
+        // If the element is already present, abort
+        console.log("Element already inserted. Aborting insertion")
+    } else if (postType !== "question") {
+        // If the post is a note, abort
+        console.log("Post is not a question. Aborting insertion")
     } else {
         // Try again in a second
         console.log("Page still loading")
@@ -78,12 +103,14 @@ function insertSuggestionElement() {
 // Display suggestion in new element
 function displaySuggestion(data) {
     // Trying to find suggestion element
-    let elem = document.getElementById("AI_EXTENSION_render")
+    let suggestElem = document.getElementById("AI_EXTENSION_render")
+    let contextElem = document.getElementById("AI_context")
     // If we found the element, we can insert our suggestion
-    if (elem) {
+    if (suggestElem) {
         // Insert suggestion data
         let suggestion = data["suggested_answer"]
-        elem.innerHTML = "<p>" + suggestion + "</p>"
+        suggestElem.innerHTML = "<p>" + suggestion + "</p>"
+        contextElem.innerHTML = "Found in " + data["most_relevant_slide"]["file_name"] + ", slide " + data["most_relevant_slide"]["page_number"]
     } else {
         // Try again in half a second (this should be very rare)
         console.log("Suggestion element still loading (!!!)")
@@ -91,5 +118,15 @@ function displaySuggestion(data) {
     }
 }
 
-insertSuggestionElement()
-getSuggestion()
+// When receiving a message from background script
+function onMessage(message) {
+    console.log("Message received")
+    // If message matches what we're looking for
+    if (message["load"] === "the thing") {
+        setTimeout(insertSuggestionElement, 500)
+    }
+}
+
+// Add message listener
+browser.runtime.onMessage.addListener(onMessage)
+
