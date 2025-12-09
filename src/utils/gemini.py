@@ -16,7 +16,7 @@ if not test_mode:
 def gen_content(content):
     ret = None
     if test_mode:
-        ret = "PRETEND THIS IS A SMART AI RESPONSE"
+        ret = content
     else:
         response = client.models.generate_content(
             model="gemini-2.5-flash",
